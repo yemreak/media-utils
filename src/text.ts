@@ -135,9 +135,20 @@ export function convertTrTextToSlug(text: string): string {
 		.replace(/\s+/g, "-")
 }
 
-export function getClipboard() {
-	if (process.platform !== "darwin") throw new Error("Only macOS is supported.")
-	return execSync(`pbpaste`).toString()
+/**
+ * Copies text to the clipboard.
+ * @param text The text to be copied to the clipboard.
+ */
+export function copyToClipboard(text: string): void {
+	execSync(`echo "${text.replace(/"/g, '\\"')}" | pbcopy`)
+}
+
+/**
+ * Returns the text from the clipboard.
+ * @returns The text from the clipboard.
+ */
+export function pasteFromClipboard(): string {
+	return execSync("pbpaste").toString()
 }
 
 export function findUpdatedPart(oldStr: string, newStr: string) {
